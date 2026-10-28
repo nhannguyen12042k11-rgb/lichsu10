@@ -1,0 +1,1010 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#f5f5f5">
+<title>Trắc nghiệm Lịch sử</title>
+<style>
+  /* ============ THEME VARIABLES ============ */
+  :root {
+    --bg: #f5f5f5;
+    --card: #ffffff;
+    --card-hover: #f7f7f7;
+    --text: #1a1a1a;
+    --text-muted: #666666;
+    --text-faint: #999999;
+    --border: #e0e0e0;
+    --border-strong: #cccccc;
+    --primary: #2563eb;
+    --primary-hover: #1d4ed8;
+    --primary-light: #eff6ff;
+    --primary-border: #93c5fd;
+    --on-primary: #ffffff;
+    --success: #16a34a;
+    --success-bg: #dcfce7;
+    --success-border: #86efac;
+    --danger: #dc2626;
+    --danger-bg: #fee2e2;
+    --danger-border: #fca5a5;
+    --warning: #d97706;
+    --chip-bg: #f0f0f0;
+    --chip-active-bg: #2563eb;
+    --chip-active-text: #ffffff;
+    --shadow: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.04);
+    --shadow-lg: 0 4px 14px rgba(0,0,0,0.1);
+    --overlay: rgba(0,0,0,0.4);
+  }
+
+  [data-theme="dark"] {
+    --bg: #121212;
+    --card: #1e1e1e;
+    --card-hover: #262626;
+    --text: #e8e8e8;
+    --text-muted: #a0a0a0;
+    --text-faint: #707070;
+    --border: #333333;
+    --border-strong: #444444;
+    --primary: #3b82f6;
+    --primary-hover: #60a5fa;
+    --primary-light: #1e3a5f;
+    --primary-border: #1e40af;
+    --on-primary: #ffffff;
+    --success: #22c55e;
+    --success-bg: #14361f;
+    --success-border: #166534;
+    --danger: #ef4444;
+    --danger-bg: #3b1313;
+    --danger-border: #7f1d1d;
+    --warning: #f59e0b;
+    --chip-bg: #2a2a2a;
+    --chip-active-bg: #3b82f6;
+    --chip-active-text: #ffffff;
+    --shadow: 0 1px 3px rgba(0,0,0,0.3), 0 1px 2px rgba(0,0,0,0.2);
+    --shadow-lg: 0 4px 14px rgba(0,0,0,0.4);
+    --overlay: rgba(0,0,0,0.6);
+  }
+
+  /* ============ BASE ============ */
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html, body { min-height: 100%; }
+  body {
+    font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    padding: 60px 0 40px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    transition: background-color 0.25s, color 0.25s;
+  }
+  body * { transition: background-color 0.2s, color 0.2s, border-color 0.2s; }
+
+  .wrap { max-width: 720px; margin: 0 auto; padding: 0 16px; }
+  .screen { display: none; }
+  .screen.active { display: block; }
+  .hidden { display: none !important; }
+
+  /* ============ THEME TOGGLE ============ */
+  .theme-toggle {
+    position: fixed;
+    top: 12px;
+    right: 16px;
+    z-index: 100;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 1.5px solid var(--border-strong);
+    background: var(--card);
+    color: var(--text);
+    cursor: pointer;
+    display: grid;
+    place-items: center;
+    font-size: 20px;
+    box-shadow: var(--shadow);
+    transition: background-color 0.2s, border-color 0.2s, transform 0.1s;
+  }
+  .theme-toggle:active { transform: scale(0.92); }
+  .theme-toggle svg { width: 22px; height: 22px; }
+
+  /* ============ CARD ============ */
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 24px 20px;
+    box-shadow: var(--shadow-lg);
+    animation: fadeUp 0.3s ease both;
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  h1 { font-size: 22px; margin-bottom: 6px; text-align: center; font-weight: 700; }
+  h2.section-title {
+    font-size: 17px;
+    margin: 22px 0 12px;
+    text-align: center;
+    font-weight: 700;
+    color: var(--text);
+  }
+  .sub { text-align: center; font-size: 14px; color: var(--text-muted); margin-bottom: 20px; }
+
+  /* ============ BUTTONS ============ */
+  .btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    padding: 14px 18px;
+    border-radius: 12px;
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 16px;
+    font-weight: 600;
+    transition: background-color 0.15s, transform 0.1s, border-color 0.15s;
+    user-select: none;
+  }
+  .btn:active { transform: scale(0.98); }
+  .btn-primary { background: var(--primary); color: var(--on-primary); }
+  .btn-primary:hover { background: var(--primary-hover); }
+  .btn-secondary {
+    background: transparent;
+    color: var(--text);
+    border: 1.5px solid var(--border-strong);
+  }
+  .btn-secondary:hover { background: var(--card-hover); }
+  .btn-row { display: flex; gap: 10px; margin-top: 16px; }
+  .btn-row .btn { flex: 1; }
+
+  /* ============ LOCK ============ */
+  .lock-card { text-align: center; margin-top: 8vh; }
+  .lock-icon {
+    width: 64px; height: 64px; margin: 0 auto 14px;
+    border-radius: 50%;
+    background: var(--primary-light);
+    color: var(--primary);
+    display: grid; place-items: center;
+    font-size: 30px;
+  }
+  input[type=password] {
+    width: 100%;
+    padding: 14px 16px;
+    border-radius: 12px;
+    border: 1.5px solid var(--border-strong);
+    background: var(--bg);
+    color: var(--text);
+    font-family: inherit;
+    font-size: 17px;
+    text-align: center;
+    letter-spacing: 4px;
+    outline: none;
+    margin-top: 6px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  input[type=password]::placeholder { letter-spacing: 1px; color: var(--text-faint); }
+  input[type=password]:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px var(--primary-light);
+  }
+  .err { color: var(--danger); font-size: 13.5px; height: 20px; margin: 8px 0 4px; font-weight: 600; }
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    20% { transform: translateX(-8px); }
+    40% { transform: translateX(8px); }
+    60% { transform: translateX(-5px); }
+    80% { transform: translateX(5px); }
+  }
+  .shake { animation: shake 0.45s ease; }
+
+  /* ============ SETUP ============ */
+  .setting {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px 16px;
+    margin-bottom: 12px;
+  }
+  .setting-row { display: flex; align-items: center; justify-content: space-between; gap: 14px; }
+  .setting-title { font-size: 15px; font-weight: 600; }
+  .setting-desc { font-size: 12.5px; color: var(--text-muted); margin-top: 2px; }
+
+  .toggle {
+    width: 52px; height: 30px;
+    flex: 0 0 auto;
+    border-radius: 99px;
+    border: none;
+    position: relative;
+    background: var(--border-strong);
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+  .toggle span {
+    position: absolute;
+    top: 3px; left: 3px;
+    width: 24px; height: 24px;
+    border-radius: 50%;
+    background: #fff;
+    transition: left 0.2s;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.25);
+  }
+  .toggle.on { background: var(--primary); }
+  .toggle.on span { left: 25px; }
+
+  .chips { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
+  .chip {
+    flex: 1;
+    min-width: 80px;
+    padding: 11px 8px;
+    border-radius: 10px;
+    cursor: pointer;
+    background: var(--chip-bg);
+    border: 1.5px solid transparent;
+    color: var(--text);
+    font-family: inherit;
+    font-size: 14.5px;
+    font-weight: 600;
+    transition: background-color 0.15s, border-color 0.15s;
+  }
+  .chip:hover { border-color: var(--border-strong); }
+  .chip.active {
+    background: var(--chip-active-bg);
+    color: var(--chip-active-text);
+    border-color: var(--chip-active-bg);
+  }
+
+  .info-row { display: flex; gap: 10px; margin: 18px 0; }
+  .info-row > div {
+    flex: 1;
+    text-align: center;
+    padding: 12px 6px;
+    border-radius: 10px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+  }
+  .info-row b { display: block; font-size: 19px; color: var(--primary); }
+  .info-row span { font-size: 11px; color: var(--text-muted); letter-spacing: 0.3px; }
+
+  /* ============ QUIZ BAR ============ */
+  .qbar {
+    position: sticky;
+    top: 8px;
+    z-index: 50;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 12px 16px;
+    margin-bottom: 14px;
+    box-shadow: var(--shadow-lg);
+  }
+  .qbar-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 15px;
+  }
+  .timer { font-weight: 700; font-variant-numeric: tabular-nums; font-size: 17px; color: var(--text); }
+  .timer.warn { color: var(--danger); animation: pulse 1s infinite; }
+  @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.45; } }
+  .counter { font-weight: 600; color: var(--text-muted); font-variant-numeric: tabular-nums; }
+  .progress {
+    height: 6px;
+    border-radius: 99px;
+    background: var(--border);
+    overflow: hidden;
+    margin-top: 9px;
+  }
+  .progress-fill {
+    height: 100%;
+    width: 0;
+    border-radius: 99px;
+    background: var(--primary);
+    transition: width 0.3s ease, background-color 0.2s;
+  }
+
+  /* ============ QUESTION CARDS ============ */
+  .q-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 16px 16px 8px;
+    margin-bottom: 12px;
+    box-shadow: var(--shadow);
+    animation: fadeUp 0.3s ease both;
+  }
+  .q-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; gap: 10px; flex-wrap: wrap; }
+  .q-num {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 99px;
+    background: var(--primary-light);
+    color: var(--primary);
+  }
+  .tag { font-size: 11.5px; font-weight: 700; padding: 4px 10px; border-radius: 99px; }
+  .tag.ok { background: var(--success-bg); color: var(--success); border: 1px solid var(--success-border); }
+  .tag.no { background: var(--danger-bg); color: var(--danger); border: 1px solid var(--danger-border); }
+  .tag.skip { background: var(--chip-bg); color: var(--text-muted); border: 1px solid var(--border-strong); }
+
+  .q-text { font-size: 15.5px; line-height: 1.55; margin-bottom: 12px; font-weight: 600; }
+  .q-text .quote {
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 1.6;
+    margin-top: 10px;
+    padding: 10px 12px;
+    border-radius: 8px;
+    background: var(--bg);
+    border-left: 3px solid var(--primary);
+  }
+  .q-text .quote i { color: var(--text-muted); font-size: 12.5px; }
+
+  /* ============ OPTIONS ============ */
+  .opt {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 11px;
+    width: 100%;
+    text-align: left;
+    background: var(--card);
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    padding: 11px 13px;
+    margin-bottom: 8px;
+    color: var(--text);
+    font-family: inherit;
+    font-size: 14.8px;
+    line-height: 1.45;
+    cursor: pointer;
+    transition: background-color 0.15s, border-color 0.15s;
+  }
+  .opt:hover { background: var(--card-hover); border-color: var(--border-strong); }
+  .badge {
+    flex: 0 0 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    font-weight: 700;
+    font-size: 13px;
+    background: var(--chip-bg);
+    color: var(--text-muted);
+    transition: background-color 0.15s, color 0.15s;
+  }
+  .opt-text { flex: 1; }
+  .opt.selected {
+    background: var(--primary-light);
+    border-color: var(--primary);
+  }
+  .opt.selected .badge { background: var(--primary); color: var(--on-primary); }
+
+  .opt.ro { cursor: default; }
+  .opt.ro:hover { background: var(--card); border-color: var(--border); }
+  .opt.correct { background: var(--success-bg); border-color: var(--success); }
+  .opt.correct .badge { background: var(--success); color: #fff; }
+  .opt.correct.ro:hover { background: var(--success-bg); border-color: var(--success); }
+  .opt.wrong { background: var(--danger-bg); border-color: var(--danger); }
+  .opt.wrong .badge { background: var(--danger); color: #fff; }
+  .opt.wrong.ro:hover { background: var(--danger-bg); border-color: var(--danger); }
+
+  /* Nhãn trong phần xem lại bài */
+  .opt-tags {
+    width: 100%;
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    padding-left: 39px;
+    margin-top: 2px;
+  }
+  .opt-tag {
+    font-size: 10.8px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 99px;
+    letter-spacing: 0.2px;
+    line-height: 1.5;
+  }
+  .opt-tag.user {
+    background: var(--primary-light);
+    color: var(--primary);
+    border: 1px solid var(--primary-border);
+  }
+  .opt-tag.correct {
+    background: var(--success-bg);
+    color: var(--success);
+    border: 1px solid var(--success-border);
+  }
+  .opt-tag.both {
+    background: var(--success-bg);
+    color: var(--success);
+    border: 1px solid var(--success-border);
+  }
+
+  .submit-btn { margin: 6px 0 10px; }
+  .hint { text-align: center; font-size: 12.5px; color: var(--text-faint); margin-top: 6px; }
+
+  /* ============ RESULT ============ */
+  .score-ring {
+    position: relative;
+    width: 170px;
+    height: 170px;
+    margin: 4px auto 18px;
+  }
+  .score-ring svg { width: 100%; height: 100%; transform: rotate(-90deg); }
+  .ring-bg { fill: none; stroke: var(--border); stroke-width: 8; }
+  .ring-fg {
+    fill: none;
+    stroke: var(--primary);
+    stroke-width: 8;
+    stroke-linecap: round;
+    stroke-dasharray: 276.46;
+    stroke-dashoffset: 276.46;
+    transition: stroke-dashoffset 0.9s ease;
+  }
+  .ring-label {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  .ring-label b { font-size: 40px; line-height: 1; color: var(--primary); }
+  .ring-label small { font-size: 12px; color: var(--text-muted); margin-top: 4px; letter-spacing: 1px; }
+
+  .verdict { text-align: center; font-size: 17px; font-weight: 700; margin-bottom: 2px; }
+  .verdict-sub { text-align: center; font-size: 13px; color: var(--text-muted); margin-bottom: 18px; }
+
+  .stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .stat {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 12px 8px;
+    text-align: center;
+  }
+  .stat b { display: block; font-size: 20px; margin-bottom: 2px; }
+  .stat span { font-size: 11.5px; color: var(--text-muted); letter-spacing: 0.3px; }
+  .stat.g b { color: var(--success); }
+  .stat.r b { color: var(--danger); }
+  .stat.gray b { color: var(--text-muted); }
+  .stat.c b { color: var(--primary); }
+
+  .top-link {
+    display: block;
+    text-align: center;
+    margin-top: 18px;
+    font-size: 13.5px;
+    color: var(--text-muted);
+    text-decoration: underline;
+    cursor: pointer;
+  }
+  .top-link:hover { color: var(--text); }
+
+  /* ============ RESPONSIVE ============ */
+  @media (max-width: 480px) {
+    .card { padding: 20px 16px; }
+    h1 { font-size: 20px; }
+    .q-text { font-size: 15px; }
+    .opt { font-size: 14px; padding: 10px 12px; }
+    .stats { gap: 8px; }
+    .stat b { font-size: 18px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+  }
+</style>
+</head>
+<body data-theme="light">
+
+<button id="themeToggle" class="theme-toggle" aria-label="Chuyển chế độ sáng/tối" title="Chuyển chế độ sáng/tối">
+  <svg id="themeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+  </svg>
+</button>
+
+<!-- ============ 1. KHÓA MẬT KHẨU ============ -->
+<div class="wrap screen active" id="lockScreen">
+  <div class="card lock-card" id="lockCard">
+    <div class="lock-icon">🔒</div>
+    <h1>Phòng thi Lịch Sử</h1>
+    <p class="sub">Nhập mật khẩu để vào phần cài đặt bài thi</p>
+    <input type="password" id="pwInput" placeholder="Nhập mật khẩu..." autocomplete="off" enterkeyhint="go">
+    <div class="err" id="pwErr"></div>
+    <button class="btn btn-primary" id="pwBtn">Mở khóa</button>
+  </div>
+</div>
+
+<!-- ============ 2. CÀI ĐẶT ============ -->
+<div class="wrap screen" id="setupScreen">
+  <div class="card">
+    <h1>⚙️ Cài đặt bài thi</h1>
+    <p class="sub">Tuỳ chỉnh trước khi bắt đầu</p>
+
+    <div class="setting">
+      <div class="setting-row">
+        <div>
+          <div class="setting-title">Đảo thứ tự câu hỏi</div>
+          <div class="setting-desc">Xáo trộn ngẫu nhiên 50 câu hỏi</div>
+        </div>
+        <button class="toggle" id="shuffleQToggle" aria-pressed="false" aria-label="Đảo thứ tự câu hỏi"><span></span></button>
+      </div>
+    </div>
+
+    <div class="setting">
+      <div class="setting-row">
+        <div>
+          <div class="setting-title">Đảo thứ tự đáp án</div>
+          <div class="setting-desc">Xáo trộn vị trí A, B, C, D</div>
+        </div>
+        <button class="toggle" id="shuffleAToggle" aria-pressed="false" aria-label="Đảo thứ tự đáp án"><span></span></button>
+      </div>
+    </div>
+
+    <div class="setting">
+      <div class="setting-title">⏱ Thời gian làm bài</div>
+      <div class="chips" id="timeChips">
+        <button class="chip" data-min="15">15 phút</button>
+        <button class="chip active" data-min="30">30 phút</button>
+        <button class="chip" data-min="45">45 phút</button>
+      </div>
+    </div>
+
+    <div class="info-row">
+      <div><b>50</b><span>CÂU HỎI</span></div>
+      <div><b>10</b><span>ĐIỂM TỐI ĐA</span></div>
+      <div><b id="setupTime">30</b><span>PHÚT</span></div>
+    </div>
+
+    <button class="btn btn-primary" id="startBtn">Bắt đầu làm bài</button>
+  </div>
+</div>
+
+<!-- ============ 3. LÀM BÀI ============ -->
+<div class="wrap screen" id="quizScreen">
+  <div class="qbar">
+    <div class="qbar-top">
+      <span class="timer" id="timer">30:00</span>
+      <span class="counter" id="counter">0/50</span>
+    </div>
+    <div class="progress"><div class="progress-fill" id="progressFill"></div></div>
+  </div>
+
+  <div id="quizList"></div>
+
+  <button class="btn btn-primary submit-btn" id="submitBtn">Nộp bài</button>
+  <div class="hint">Chọn đáp án cho từng câu rồi bấm "Nộp bài"</div>
+</div>
+
+<!-- ============ 4. KẾT QUẢ ============ -->
+<div class="wrap screen" id="resultScreen">
+  <div class="card">
+    <div class="score-ring">
+      <svg viewBox="0 0 100 100">
+        <circle class="ring-bg" cx="50" cy="50" r="44"/>
+        <circle class="ring-fg" id="ringFg" cx="50" cy="50" r="44"/>
+      </svg>
+      <div class="ring-label">
+        <b id="scoreVal">0</b>
+        <small>ĐIỂM / 10</small>
+      </div>
+    </div>
+    <div class="verdict" id="verdict"></div>
+    <div class="verdict-sub" id="verdictSub"></div>
+
+    <div class="stats">
+      <div class="stat g"><b id="stCorrect">0</b><span>CÂU ĐÚNG</span></div>
+      <div class="stat r"><b id="stWrong">0</b><span>CÂU SAI</span></div>
+      <div class="stat gray"><b id="stBlank">0</b><span>BỎ TRỐNG</span></div>
+      <div class="stat c"><b id="stTime">00:00</b><span>THỜI GIAN</span></div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn btn-secondary" id="reviewBtn">Xem lại bài</button>
+      <button class="btn btn-primary" id="retryBtn">Làm lại bài</button>
+    </div>
+    <div class="top-link" id="backSetup">← Quay lại cài đặt</div>
+  </div>
+
+  <div id="reviewSection" class="hidden">
+    <h2 class="section-title">📋 Chi tiết bài làm</h2>
+    <div id="reviewList"></div>
+  </div>
+</div>
+
+<script>
+/* =======================================================
+   NGÂN HÀNG CÂU HỎI
+   ======================================================= */
+const QUESTIONS = [
+{q:"Khái niệm nào sau đây là đúng?",o:["Lịch sử là những gì diễn ra trong quá khứ.","Lịch sử là những gì diễn ra ở mỗi dân tộc.","Lịch sử là những gì diễn ra ở mỗi quốc gia.","Lịch sử là quá trình tiến hóa của con người."],a:0},
+{q:"Khái niệm nào là đúng về Sử học?",o:["Sử học là khoa học nghiên cứu về quá khứ của con người.","Sử học là khoa học nghiên cứu về văn hóa của con người.","Sử học là khoa học nghiên cứu về hoạt động của con người.","Sử học là khoa học nghiên cứu về tiến hóa của con người."],a:0},
+{q:"Nội dung nào sau đây không thuộc về lịch sử?",o:["Các lời tiên tri, dự báo tương lai.","Sự hình thành các nền văn minh.","Hoạt động của một vương triều.","Các cuộc chiến tranh thế giới."],a:0},
+{q:"Sử học có chức năng nào sau đây?",o:["Khoa học, xã hội và giáo dục.","Khoa học và nghiên cứu.","Khoa học và giáo dục.","Khoa học và nhân văn."],a:0},
+{q:"Nhận thức lịch sử là gì?",o:["Là những hiểu biết của con người về quá khứ, được tái hiện hoặc trình bày theo những cách khác nhau.","Là những mô tả của con người về quá khứ đã qua.","Là những công trình nghiên cứu lịch sử.","Là những lễ hội lịch sử - văn hoá được phục dựng."],a:0},
+{q:"Hiện thực lịch sử là gì?",o:["Là tất cả những gì đã diễn ra trong quá khứ về con người và xã hội loài người.","Là tất cả những gì đã diễn ra trong quá khứ của loài người.","Là những gì đã xảy ra trong quá khứ mà con người nhận thức được.","Là khoa học tìm hiểu về quá khứ."],a:0},
+{q:"Khôi phục các sự kiện lịch sử diễn ra trong quá khứ là chức năng nào của Sử học?",o:["Khoa học.","Tái hiện.","Nhận biết.","Phục dựng."],a:1},
+{q:"Thông qua việc tổng kết thực tiễn, rút ra bài học kinh nghiệm góp phần giáo dục tư tưởng, tình cảm đạo đức là chức năng nào của Sử học?",o:["Xã hội.","Dự báo.","Nhận thức.","Tuyên truyền."],a:0},
+{q:"So với hiện thực lịch sử, nhận thức lịch sử có đặc điểm gì?",o:["Nhận thức lịch sử không thể tái hiện đầy đủ hiện thực lịch sử.","Nhận thức lịch sử luôn phản ánh đúng hiện thực lịch sử.","Nhận thức lịch sử thường lạc hậu hơn hiện thực lịch sử.","Nhận thức lịch sử độc lập, khách quan với hiện thực lịch sử."],a:0},
+{q:"Lịch sử là “quá trình tương tác không ngừng giữa nhà sử học và sự thật lịch sử, là cuộc đối thoại không bao giờ dứt giữa hiện tại và quá khứ” (Ét-uốt Ha-lét Ca). Em hiểu về quan điểm này thế nào?",o:["Để nhận thức được lịch sử cần có sự tương tác không ngừng giữa hiện tại với quá khứ.","Phản ánh mối quan hệ giữa nhà sử học và hiện thực lịch sử.","Phản ánh mối quan hệ giữa quá khứ và hiện tại.","Phản ánh lịch sử là gì."],a:0},
+{q:"G. M. Cla-đen-ni-ốt - nhà sử học người Đức thế kỉ XVIII cho rằng: “Đòi hỏi người viết sử phải tự đặt mình vào vị thế của người không tôn giáo, không tổ quốc, không gia đình, thì đó là một sai lầm lớn, vì họ đang đòi hỏi những điều không thể”. Quan điểm này nên được hiểu thế nào cho đúng?",o:["Tính khách quan, trung thực trong nghiên cứu lịch sử có ý nghĩa tương đối.","Cần đảm bảo tính khách quan, trung thực tuyệt đối trong nghiên cứu lịch sử.","Đòi hỏi khách quan, trung thực trong nghiên cứu lịch sử là điều không thể.","Nhà sử học đều phải có gia đình, tổ quốc, tôn giáo của mình."],a:0},
+{q:"Các nhà khoa học dựa vào đâu để biết và dựng lại lịch sử?",o:["Các nguồn tư liệu lịch sử.","Các bài nghiên cứu khoa học.","Các bộ phim khoa học viễn tưởng.","Các bộ tiểu thuyết giả tưởng."],a:0},
+{q:"Ý nào sau đây không phải là đối tượng nghiên cứu của Sử học?",o:["Những hiện tượng tự nhiên xảy ra trong quá khứ.","Quá khứ của một quốc gia hoặc khu vực trên thế giới.","Quá khứ của một cá nhân hoặc một nhóm, một cộng đồng người.","Quá khứ của toàn thể nhân loại."],a:0},
+{q:"Đối tượng nghiên cứu của Sử học là:",o:["Toàn bộ quá khứ của loài người.","Toàn bộ những gì đang diễn ra.","Toàn bộ những gì sẽ diễn ra.","Văn hoá của một cộng đồng người."],a:0},
+{q:"So với hiện thực lịch sử, lịch sử được con người nhận thức",o:["không thể tái hiện đầy đủ hiện thực lịch sử.","luôn phản ánh đúng hiện thực lịch sử.","thường lạc hậu hơn hiện thực lịch sử.","tồn tại độc lập, khách quan với hiện thực lịch sử."],a:0},
+{q:'Điểm chung trong nội dung phản ánh của hai đoạn trích dẫn sau là gì?<div class="quote">“Sử để ghi việc, mà việc hay hoặc dở đều dùng làm gương răn cho đời sau”.<br><i>(Ngô Sỹ Liên và các sử thần nhà Lê, Đại Việt sử ký toàn thư, Tập I, Sđd, tr. 101)</i><br><br>“Dân ta phải biết sử ta<br>Cho tường gốc tích nước nhà Việt Nam”<br><i>(Hồ Chí Minh, Lịch sử nước ta, 1942)</i></div>',o:["Vai trò, ý nghĩa của tri thức lịch sử đối với cuộc sống.","Người Việt Nam cần phải hiểu biết về lịch sử Việt Nam.","Sử được dùng làm gương răn dạy cho đời sau.","Người Việt Nam cần phải tường tận về gốc tích của mình."],a:0},
+{q:"Yếu tố cốt lõi nào tạo nên ý thức dân tộc và bản sắc văn hóa của cộng đồng dân tộc?",o:["Hiểu biết về lịch sử.","Dự đoán được tương lai.","Nghiên cứu và học tập.","Hiểu biết về hiện tại."],a:0},
+{q:"Những hiểu biết của con người về các lĩnh vực liên quan đến lịch sử, thông qua quá trình học tập, khám phá, nghiên cứu và trải nghiệm được gọi là",o:["tri thức lịch sử.","hiện thực lịch sử.","tiến trình lịch sử.","phương pháp lịch sử."],a:0},
+{q:"Nội dung nào dưới đây không thuộc nhiệm vụ của Sử học?",o:["Đề ra những chính sách phù hợp để phát triển đất nước.","Truyền bá những giá trị truyền thống tốt đẹp của lịch sử, giáo dục tình yêu quê hương, đất nước.","Dự báo về tương lai của đất nước, nhân loại,...","Cung cấp tri thức về hiện thực lịch sử một cách khách quan, độc lập."],a:0},
+{q:"Hình thức học tập lịch sử nào dưới đây không phù hợp với môn Lịch sử?",o:["Học trong phòng thí nghiệm.","Xem phim tài liệu lịch sử.","Tham quan, điền dã.","Học trên lớp."],a:0},
+{q:"Ý nào dưới đây không phản ánh đúng vai trò tri thức của lịch sử?",o:["Cung cấp những tri thức về sự phát triển của sinh giới.","Phản ánh những thông tin về quá khứ để hiểu về cội nguồn.","Góp phần truyền tạo nên yếu tố cốt lõi về một dân tộc.","Hiểu quá khứ để giải thích hiện tại và dự đoán tương lai."],a:0},
+{q:"Một trong những nguyên nhân thể hiện sự cần thiết của việc học tập, khám phá lịch sử suốt đời?",o:["Rút ra được những bài học có giá trị để phòng tránh sai lầm.","Tạo ra nguồn tài chính dồi dào phục vụ cuộc sống an sinh.","Cung cấp lương thực, thực phẩm cho cuộc sống hàng ngày.","Cung cấp những tri thức về sự phát triển của sinh giới."],a:0},
+{q:"Sử học có mối quan hệ như thế nào với di sản văn hóa?",o:["Bảo tồn và phát huy giá trị các di sản.","Bảo tồn và khôi phục các di sản.","Bảo vệ và lưu giữ các di sản.","Bảo vệ, khôi phục các di sản."],a:0},
+{q:"Ngành nào sau đây đã góp phần thúc đẩy việc bảo vệ di sản văn hóa, di tích lịch sử của các quốc gia?",o:["Du lịch.","Kiến trúc.","Kinh tế.","Dịch vụ."],a:0},
+{q:"Công tác bảo vệ, bảo quản, tu bổ, phục hồi... di sản được xem là nhiệm vụ",o:["thường xuyên.","lâu dài.","trước mắt.","xuyên suốt."],a:0},
+{q:"Điều cốt lõi trong hoạt động bảo tồn di sản là phải đảm bảo tính",o:["nguyên trạng.","kế thừa.","tái tạo.","nhân tạo."],a:0},
+{q:"Một trong những khía cạnh về giá trị của một di sản là",o:["lịch sử.","địa lí.","văn học.","giáo dục."],a:0},
+{q:"Cơ sở khoa học cho công tác xác định giá trị, bảo tồn và phát huy giá trị đích thực của di sản là kết quả nghiên cứu",o:["Sử học.","Địa lí.","Văn học.","Toán học."],a:0},
+{q:"Di sản nào sau đây được xem là di sản văn hóa vật thể?",o:["Thánh quách, lăng tẩm.","Nghệ thuật ca trù.","Hát xướng, hát xoan.","Đàn ca tài tử."],a:0},
+{q:"Di sản nào sau đây được xem là di sản văn hóa phi vật thể?",o:["Hát xoan.","Nhà cổ.","Lăng tẩm.","Cung điện."],a:0},
+{q:"Di sản văn hóa được bảo tồn và phát huy giá trị của mình sẽ góp phần phát triển",o:["kinh tế - xã hội.","kinh tế - văn hóa.","kinh tế - chính trị.","chính trị - xã hội."],a:0},
+{q:"Tổ chức quốc tế nào sau đây ghi danh, công nhận các danh mục di sản văn hóa thế giới?",o:["UNESCO.","NATO.","ASEAN.","WTO."],a:0},
+{q:"Công tác bảo tồn và phát huy giá trị di sản văn hóa vật thể có đóng góp gì?",o:["Hạn chế, khắc phục những tác động tiêu cực của điều kiện tự nhiên và con người.","Tái hiện lại những di sản lịch sử văn hóa.","Giữ hiện vật nguyên vẹn và làm tăng giá trị của hiện vật.","Tu bổ, phục dựng những di sản văn hóa bị xuống cấp."],a:0},
+{q:"Kết quả nghiên cứu của Sử học sẽ là:",o:["Cơ sở khoa học cho công tác xác định giá trị, bảo tồn và phát huy giá trị di sản.","Bảo tồn và phát huy giá trị đích thực của di sản.","Cơ sở khoa học cho công tác xác định giá trị.","Bảo tồn và phát huy giá trị đích thực của di sản vì sự phát triển bền vững trong bối cảnh đời sống hiện tại."],a:0},
+{q:"Toàn bộ những giá trị vật chất và tinh thần do con người sáng tạo ra trong quá trình lịch sử được gọi là",o:["văn hóa.","văn minh.","chữ viết.","nhà nước."],a:0},
+{q:"Sự tiến bộ về vật chất và tinh thần của xã hội loài người, trạng thái phát triển cao của văn hóa được gọi là",o:["văn minh.","trí tuệ.","xã hội.","đẳng cấp."],a:0},
+{q:"Khác với văn minh, văn hóa thường có",o:["bề dày lịch sử và mang tính dân tộc.","trình độ phát triển cao, mang tầm vóc quốc tế.","tính sáng tạo cao, thúc đẩy văn minh phát triển.","những giá trị sáng tạo ở trình độ cao nhất."],a:0},
+{q:"Khác với văn hóa, văn minh là những giá trị vật chất và tinh thần do loài người sáng tạo ra",o:["cùng với sự phát triển của xã hội loài người.","có trình độ phát triển cao, mang tầm vóc quốc tế.","bề dày lịch sử và mang tính dân tộc.","đầu tiên trong lịch sử xã hội loài người."],a:1},
+{q:"Một trong những tiêu chí đánh dấu con người bước vào thời đại văn minh là khi có",o:["chữ viết.","công cụ đồng thau.","tiếng nói.","công cụ đá."],a:0},
+{q:"Mối quan hệ giữa văn minh và văn hóa là",o:["văn hóa ra đời trước, phát triển đến trình độ nào đó thì văn minh ra đời. Văn minh ra đời sẽ thúc đẩy văn hóa phát triển.","văn minh ra đời trước, phát triển đến trình độ nào đó thì văn hóa ra đời. Văn hóa ra đời sẽ thúc đẩy văn minh phát triển.","đều là những giá trị vật chất do loài người sáng tạo ra trong lịch sử nhưng văn minh là toàn bộ những gì loài người sáng tạo ra từ khi xuất hiện đến nay.","đều là những giá trị tinh thần do loài người sáng tạo ra trong lịch sử nhưng văn minh là toàn bộ những gì loài người sáng tạo ra từ khi xuất hiện đến nay."],a:0},
+{q:"Văn hoá là tổng thể những giá trị vật chất và tinh thần do con người sáng tạo ra",o:["trong tiến trình lịch sử.","sau khi đã có chữ viết.","sau khi xuất hiện nhà nước.","trong các cuộc chiến tranh."],a:0},
+{q:"Nội dung nào sau đây phản ánh đúng điểm tương đồng giữa văn hóa và văn minh?",o:["Đều là những giá trị vật chất và tinh thần do con người sáng tạo nên.","Đều phản ánh những tiến bộ vượt bậc về khoa học và kĩ thuật.","Đều mang đậm bản sắc riêng của tộc người và có tính khép kín.","Đều bắt đầu xuất hiện khi con người biết sử dụng công cụ bằng sắt."],a:0},
+{q:"Hệ thống chữ viết cổ nhất của người Ai Cập được gọi là",o:["chữ tượng hình.","chữ tượng thanh.","chữ tượng ý.","chữ cái Rô-ma."],a:0},
+{q:"Loại hình kiến trúc tiêu biểu nhất của người Ai Cập cổ đại là",o:["các kim tự tháp.","Tháp Thạt Luổng.","Đấu trường Rô-ma.","Vạn lí trường thành."],a:0},
+{q:"Nội dung nào sau đây là nguồn gốc dẫn đến sự xuất hiện sớm của chữ viết ở Ai Cập thời kì cổ đại?",o:["Nhu cầu ghi chép và lưu trữ những gì đã diễn ra.","Nhu cầu của sản xuất nông nghiệp đúng thời vụ.","Nhu cầu sáng tác các tác phẩm văn học nghệ thuật.","Nhu cầu đo đạc lại ruộng đất theo định kì hàng năm."],a:0},
+{q:"Thành tựu về lĩnh vực nào sau đây của cư dân Ai Cập cổ đại đã được ứng dụng hiệu quả trong việc xây dựng kim tự tháp?",o:["Toán học.","Tôn giáo.","Tín ngưỡng.","Chữ viết."],a:0},
+{q:"Một trong những nguyên nhân dẫn đến sự ra đời sớm của ngành lịch pháp và thiên văn ở Ai Cập cổ đại là do",o:["nhu cầu sản xuất trong nông nghiệp.","nhu cầu tính toán trong xây dựng.","nhu cầu ghi chép và lưu trữ thông tin.","nhu cầu hội nhập quốc tế sâu rộng."],a:0},
+{q:"Kĩ thuật ướp xác là một trong những thành tựu tiêu biểu của văn minh Ai Cập trên lĩnh vực nào sau đây?",o:["Y học.","Thiên văn.","Văn học.","Kiến trúc."],a:0},
+{q:"Người Ai Cập viết chữ trên nguyên liệu gì?",o:["Giấy pa-pi-rút (papyrus).","Thẻ tre, trúc.","Đất sét.","Lụa."],a:0},
+{q:"Công trình kiến trúc nổi bật nhất của Ai Cập cổ đại là",o:["kim tự tháp.","chùa hang.","nhà thờ.","cung điện."],a:0}
+];
+
+/* =======================================================
+   TRẠNG THÁI
+   ======================================================= */
+const PASSWORD = "C12";
+const $ = id => document.getElementById(id);
+const RING_CIRC = 276.46;
+
+let quiz = [];
+let answers = [];
+let submitted = false;
+let minutes = 30;
+let remaining = 0;
+let timerId = null;
+let shuffleQ = false;
+let shuffleA = false;
+let startSeconds = 0;
+
+/* =======================================================
+   TIỆN ÍCH
+   ======================================================= */
+function shuffleArr(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+function fmt(sec) {
+  sec = Math.max(0, sec);
+  const m = Math.floor(sec / 60), s = sec % 60;
+  return String(m).padStart(2, '0') + ':' + String(s).padStart(2, '0');
+}
+function showScreen(name) {
+  document.querySelectorAll('.screen').forEach(el => el.classList.remove('active'));
+  $(name).classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+/* =======================================================
+   LIGHT / DARK MODE
+   ======================================================= */
+const themeToggle = $('themeToggle');
+const themeIcon = $('themeIcon');
+const SUN_PATH = '<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>';
+const MOON_PATH = '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>';
+
+let currentTheme = 'light';
+try { currentTheme = localStorage.getItem('quiz-theme') || 'light'; } catch (e) {}
+
+function applyTheme(theme) {
+  currentTheme = theme;
+  document.body.setAttribute('data-theme', theme);
+  themeIcon.innerHTML = theme === 'light' ? MOON_PATH : SUN_PATH;
+  const meta = document.querySelector('meta[name="theme-color"]');
+  if (meta) meta.setAttribute('content', theme === 'light' ? '#f5f5f5' : '#121212');
+  try { localStorage.setItem('quiz-theme', theme); } catch (e) {}
+}
+applyTheme(currentTheme);
+
+themeToggle.addEventListener('click', () => {
+  applyTheme(currentTheme === 'light' ? 'dark' : 'light');
+});
+
+/* =======================================================
+   1) KHÓA MẬT KHẨU
+   ======================================================= */
+function tryUnlock() {
+  const val = $('pwInput').value.trim();
+  if (val.toUpperCase() === PASSWORD) {
+    $('pwErr').textContent = '';
+    $('pwInput').value = '';
+    showScreen('setupScreen');
+  } else {
+    $('pwErr').textContent = '❌ Mật khẩu không đúng. Vui lòng thử lại!';
+    const card = $('lockCard');
+    card.classList.remove('shake');
+    void card.offsetWidth;
+    card.classList.add('shake');
+    $('pwInput').select();
+  }
+}
+$('pwBtn').addEventListener('click', tryUnlock);
+$('pwInput').addEventListener('keydown', e => { if (e.key === 'Enter') tryUnlock(); });
+
+/* =======================================================
+   2) CÀI ĐẶT
+   ======================================================= */
+$('shuffleQToggle').addEventListener('click', function () {
+  shuffleQ = !shuffleQ;
+  this.classList.toggle('on', shuffleQ);
+  this.setAttribute('aria-pressed', String(shuffleQ));
+});
+$('shuffleAToggle').addEventListener('click', function () {
+  shuffleA = !shuffleA;
+  this.classList.toggle('on', shuffleA);
+  this.setAttribute('aria-pressed', String(shuffleA));
+});
+
+$('timeChips').addEventListener('click', e => {
+  const chip = e.target.closest('.chip');
+  if (!chip) return;
+  document.querySelectorAll('#timeChips .chip').forEach(c => c.classList.remove('active'));
+  chip.classList.add('active');
+  minutes = parseInt(chip.dataset.min, 10);
+  $('setupTime').textContent = minutes;
+});
+
+$('startBtn').addEventListener('click', startQuiz);
+
+/* =======================================================
+   3) BẮT ĐẦU BÀI THI
+   ======================================================= */
+function buildQuiz() {
+  let items = QUESTIONS.map(q => ({
+    q: q.q,
+    opts: q.o.map((text, idx) => ({ text, correct: idx === q.a }))
+  }));
+
+  if (shuffleQ) shuffleArr(items);
+
+  return items.map(item => {
+    const opts = item.opts.slice();
+    if (shuffleA) shuffleArr(opts);
+    const correctIdx = opts.findIndex(o => o.correct);
+    return { q: item.q, o: opts.map(o => o.text), a: correctIdx };
+  });
+}
+
+function startQuiz() {
+  quiz = buildQuiz();
+  answers = new Array(quiz.length).fill(null);
+  submitted = false;
+  startSeconds = minutes * 60;
+  remaining = startSeconds;
+
+  renderQuiz();
+  updateProgress();
+  showScreen('quizScreen');
+  startTimer();
+}
+
+function renderQuiz() {
+  $('quizList').innerHTML = quiz.map((q, i) => `
+    <div class="q-card">
+      <div class="q-head"><span class="q-num">Câu ${i + 1}</span></div>
+      <div class="q-text">${q.q}</div>
+      <div class="opts">
+        ${q.o.map((o, j) => `
+          <button class="opt" data-q="${i}" data-o="${j}" type="button">
+            <span class="badge">${'ABCD'[j]}</span>
+            <span class="opt-text">${o}</span>
+          </button>`).join('')}
+      </div>
+    </div>`).join('');
+}
+
+$('quizList').addEventListener('click', e => {
+  const btn = e.target.closest('.opt');
+  if (!btn || submitted) return;
+  const qi = +btn.dataset.q, oi = +btn.dataset.o;
+  answers[qi] = oi;
+  btn.closest('.q-card').querySelectorAll('.opt').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  updateProgress();
+});
+
+function updateProgress() {
+  const done = answers.filter(a => a !== null).length;
+  $('progressFill').style.width = (done / quiz.length * 100) + '%';
+  $('counter').textContent = done + '/' + quiz.length;
+}
+
+/* =======================================================
+   ĐỒNG HỒ
+   ======================================================= */
+function startTimer() {
+  clearInterval(timerId);
+  remaining = minutes * 60;
+  paintTimer();
+  timerId = setInterval(() => {
+    remaining--;
+    paintTimer();
+    if (remaining <= 0) {
+      clearInterval(timerId);
+      submitQuiz(true);
+    }
+  }, 1000);
+}
+function paintTimer() {
+  const el = $('timer');
+  el.textContent = fmt(remaining);
+  el.classList.toggle('warn', remaining <= 60);
+}
+
+/* =======================================================
+   NỘP BÀI
+   ======================================================= */
+$('submitBtn').addEventListener('click', () => submitQuiz(false));
+
+function submitQuiz(auto) {
+  if (submitted) return;
+  const blank = answers.filter(a => a === null).length;
+  if (!auto) {
+    const msg = blank > 0
+      ? `Bạn còn ${blank} câu chưa trả lời.\nVẫn nộp bài chứ?`
+      : 'Bạn có chắc chắn muốn nộp bài?';
+    if (!confirm(msg)) return;
+  }
+  clearInterval(timerId);
+  submitted = true;
+  showResult();
+}
+
+/* =======================================================
+   KẾT QUẢ
+   ======================================================= */
+function showResult() {
+  let correct = 0, wrong = 0, blank = 0;
+  answers.forEach((a, i) => {
+    if (a === null) blank++;
+    else if (a === quiz[i].a) correct++;
+    else wrong++;
+  });
+
+  const score = correct / quiz.length * 10;
+  const scoreTxt = (Math.round(score * 10) / 10).toFixed(1);
+  $('scoreVal').textContent = scoreTxt;
+
+  // Ring
+  const targetOffset = RING_CIRC * (1 - correct / quiz.length);
+  const ringFg = $('ringFg');
+  ringFg.style.transition = 'none';
+  ringFg.style.strokeDashoffset = RING_CIRC;
+
+  let verdict, sub;
+  if (score >= 9) { verdict = '🏆 Xuất sắc!'; sub = 'Bạn đã nắm rất vững kiến thức.'; }
+  else if (score >= 8) { verdict = '🌟 Giỏi!'; sub = 'Chỉ cần tinh chỉnh thêm một chút.'; }
+  else if (score >= 6.5) { verdict = '👍 Khá!'; sub = 'Ôn lại vài phần để bứt phá nhé.'; }
+  else if (score >= 5) { verdict = '🙂 Trung bình'; sub = 'Hãy xem lại bài và luyện tập thêm.'; }
+  else { verdict = '📚 Cần cố gắng'; sub = 'Đừng lo, xem lại đáp án rồi làm lại nhé!'; }
+  $('verdict').textContent = verdict;
+  $('verdictSub').textContent = sub;
+
+  $('stCorrect').textContent = correct;
+  $('stWrong').textContent = wrong;
+  $('stBlank').textContent = blank;
+  $('stTime').textContent = fmt(startSeconds - Math.max(remaining, 0));
+
+  buildReview();
+  $('reviewSection').classList.add('hidden');
+  $('reviewBtn').textContent = 'Xem lại bài';
+
+  showScreen('resultScreen');
+
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      ringFg.style.transition = 'stroke-dashoffset 0.9s ease';
+      ringFg.style.strokeDashoffset = targetOffset;
+    });
+  });
+}
+
+function buildReview() {
+  $('reviewList').innerHTML = quiz.map((q, i) => {
+    const ua = answers[i];
+
+    // Tóm tắt rõ: bạn chọn gì / đáp án đúng là gì
+    let summary;
+    if (ua === null) {
+      summary = `<span class="tag skip">Bỏ trống · Đáp án đúng: ${'ABCD'[q.a]}</span>`;
+    } else if (ua === q.a) {
+      summary = `<span class="tag ok">Bạn chọn ${'ABCD'[ua]} · Đúng</span>`;
+    } else {
+      summary = `<span class="tag no">Bạn chọn ${'ABCD'[ua]} · Đáp án đúng: ${'ABCD'[q.a]}</span>`;
+    }
+
+    const opts = q.o.map((o, j) => {
+      const isUser = (ua === j);
+      const isCorrect = (j === q.a);
+
+      let cls = 'opt ro';
+      if (isCorrect) cls += ' correct';
+      else if (isUser) cls += ' wrong';
+
+      let tags = '';
+      if (isUser && isCorrect) {
+        tags = `<span class="opt-tag both">Đáp án của bạn & đáp án đúng</span>`;
+      } else {
+        if (isUser) tags += `<span class="opt-tag user">Đáp án của bạn</span>`;
+        if (isCorrect) tags += `<span class="opt-tag correct">Đáp án đúng</span>`;
+      }
+
+      return `
+        <div class="${cls}">
+          <span class="badge">${'ABCD'[j]}</span>
+          <span class="opt-text">${o}</span>
+          ${tags ? `<span class="opt-tags">${tags}</span>` : ''}
+        </div>`;
+    }).join('');
+
+    return `<div class="q-card">
+      <div class="q-head"><span class="q-num">Câu ${i + 1}</span>${summary}</div>
+      <div class="q-text">${q.q}</div>
+      <div class="opts">${opts}</div>
+    </div>`;
+  }).join('');
+}
+
+/* =======================================================
+   NÚT KẾT QUẢ
+   ======================================================= */
+$('reviewBtn').addEventListener('click', () => {
+  const sec = $('reviewSection');
+  const isHidden = sec.classList.contains('hidden');
+  sec.classList.toggle('hidden');
+  if (isHidden) {
+    $('reviewBtn').textContent = 'Ẩn đáp án';
+    setTimeout(() => sec.scrollIntoView({ behavior: 'smooth', block: 'start' }), 60);
+  } else {
+    $('reviewBtn').textContent = 'Xem lại bài';
+  }
+});
+
+$('retryBtn').addEventListener('click', () => {
+  if (confirm('Làm lại bài với cài đặt hiện tại?')) startQuiz();
+});
+
+$('backSetup').addEventListener('click', () => {
+  clearInterval(timerId);
+  showScreen('setupScreen');
+});
+</script>
+</body>
+</html>
